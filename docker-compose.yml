@@ -1,0 +1,86 @@
+version: '3'
+
+services:  
+  
+  jenkins:
+    image: jenkins/jenkins:lts-jdk11
+    container_name: jenkins
+    ports:
+    - "8080:8080"
+    - "50000:50000"
+    volumes:
+      - jenkins_home:/var/jenkins_home
+    networks:
+      - at-infra-network
+
+  sonardb:
+    image: postgres:12.1-alpine
+    container_name: sonardb
+    networks:
+      - at-infra-network
+    environment:
+      POSTGRES_USER: sonar
+      POSTGRES_PASSWORD: sonaradmin
+    volumes:
+      - postgresql:/var/lib/postgresql
+      - postgresql_data:/var/lib/postgresql/data
+    
+  sonarqube:
+    image: sonarqube:8.9.0-community
+    container_name: sonarqube
+    ports:
+      -"9000:9000"
+    networks:
+      - at-infra-network
+    environment:
+      SONARQUBE_JDBC_URL: jdbc:postgresql://sonardb:5432/sonar
+      SONARQUBE_JDBC_USERNAME: sonar
+      SONARQUBE_JDBC_PASSWORD: sonaradmin
+    volumes:
+      - sonarqube_data:/opt/sonarqube/data
+      - sonarqube_extensions:/opt/sonarqube/extensions
+      - sonarqube_logs:/opt/sonarqube/logs
+
+  mongo:
+    image: mongo
+    container_name: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: rootpass
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - at-infra-network
+
+  mongo-express:
+    image: mongo-express:0.54
+    container_name: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    depends_on:
+      - mongo
+    environment:
+      ME_CONFIG_BASICAUTH_USERNAME: root
+      ME_CONFIG_BASICAUTH_PASSWORD: rootpass
+      ME_CONFIG_MONGODB_PORT: 27017
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: rootpass
+      ME_CONFIG_MONGODB_URL: mongodb://root:rootpass@mongo:27017/
+    networks:
+      - at-infra-network
+  
+
+networks: 
+  at-infra-network:
+    driver: bridge
+
+volumes:
+  mongo_data:
+  jenkins_home:
+  postgresql:
+  postgresql_data:
+  sonarqube_data:
+  sonarqube_extensions:
+  sonarqube_logs:
