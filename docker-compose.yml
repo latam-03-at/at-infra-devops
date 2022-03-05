@@ -29,7 +29,7 @@ services:
     image: sonarqube:8.9.0-community
     container_name: sonarqube
     ports:
-      -"9000:9000"
+      - "9000:9000"
     networks:
       - at-infra-network
     environment:
@@ -40,6 +40,16 @@ services:
       - sonarqube_data:/opt/sonarqube/data
       - sonarqube_extensions:/opt/sonarqube/extensions
       - sonarqube_logs:/opt/sonarqube/logs
+  
+  nexus:
+    image: sonatype/nexus3
+    restart: always
+    ports: 
+      - "8088:8081"
+    volumes:
+      - nexus_data:/nexus_data
+    networks:
+      - at-infra-network
 
   mongo:
     image: mongo
@@ -84,3 +94,5 @@ volumes:
   sonarqube_data:
   sonarqube_extensions:
   sonarqube_logs:
+  nexus_data:
+  
