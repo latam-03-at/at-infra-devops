@@ -1,0 +1,56 @@
+version: '3'
+
+services:
+  sonarqubedb:
+    image: postgres:12.1-alpine
+    container_name: sonarqubedb
+    restart: always
+    environment:
+      POSTGRES_USER: sonar
+      POSTGRES_PASSWORD: sonarpass
+      POSTGRES_DB: sonardb
+    volumes:
+      - postgresql:/var/lib/postgresql
+      - postgresql_data:/var/lib/postgresql/data
+    networks:
+      - infra_devops_net
+
+  sonarqube:
+    image: sonarqube:8.9.0-community
+    container_name: sonarqube
+    ports:
+      - 9000:9000
+    restart: always
+    environment:
+      SONARQUBE_JDBC_URL: jdbc:postgresql://sonarqubedb/sonardb
+      SONARQUBE_JDBC_USERNAME: sonar
+      SONARQUBE_JDBC_PASSWORD: sonarpass
+    volumes:
+      - sonarqube_data:/opt/sonarqube/data
+      - sonarqube_extensions:/opt/sonarqube/extensions
+      - sonarqube_logs:/opt/sonarqube/logs
+    networks:
+      - infra_devops_net
+
+  jenkins:
+    image: jenkins/jenkins:lts-jdk11
+    container_name: jenkins
+    restart: always
+    ports:
+      - 8080:8080
+      - 50000:50000
+    volumes:
+      - jenkins_home:/var/jenkins_home
+    networks:
+      - infra_devops_net
+
+volumes:
+  postgresql:
+  postgresql_data:
+  sonarqube_data:
+  sonarqube_extensions:
+  sonarqube_logs:
+  jenkins_home:
+
+networks:
+  infra_devops_net:
