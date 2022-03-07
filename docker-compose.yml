@@ -44,6 +44,17 @@ services:
     networks:
       - infra_devops_net
 
+  nexus:
+    image: sonatype/nexus3
+    container_name: nexus
+    restart: always
+    ports:
+      - 8001:8081
+    volumes:
+      - nexus-data:/nexus-data
+    networks:
+      - infra_devops_net
+
 volumes:
   postgresql:
   postgresql_data:
@@ -51,6 +62,7 @@ volumes:
   sonarqube_extensions:
   sonarqube_logs:
   jenkins_home:
+  nexus-data:
 
 networks:
   infra_devops_net:
