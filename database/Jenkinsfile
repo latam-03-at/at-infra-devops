@@ -7,7 +7,7 @@ pipeline {
     environment {
         DEPLOY_TO = "${params.Environment}"
         IMAGE_NAME = "converter-service:${params.BuildNumber}"
-        SERVER_DEV = "calebespinoza@20.228.132.238"
+        //SERVER_DEV = "calebespinoza@20.228.132.238"
     }
     stages {
 
