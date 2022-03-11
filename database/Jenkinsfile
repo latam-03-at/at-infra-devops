@@ -20,6 +20,7 @@ pipeline {
                     sh "ssh -o 'StrictHostKeyChecking no' calebespinoza@20.228.132.238 mkdir -p /home/calebespinoza/$FOLDER_NAME"
                     sh "scp database/docker-compose.yml calebespinoza@20.228.132.238:~/$FOLDER_NAME"
                     sh "ssh -o 'StrictHostKeyChecking no' calebespinoza@20.228.132.238 ls -a /home/calebespinoza/$FOLDER_NAME"
+                    sh "ssh -o 'StrictHostKeyChecking no' calebespinoza@20.228.132.238 docker-compose -f /home/calebespinoza/$FOLDER_NAME/docker-compose.yml up -d"
                 }
             }
         }
