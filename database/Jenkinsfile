@@ -1,5 +1,5 @@
 pipeline {
-    agent { label 'automation' }
+    agent { label 'linux-agent' }
     parameters {
         choice(name: 'Environment', choices: ['Development', 'Production'], description: 'Choose an environment where deploy the Database')
     }
