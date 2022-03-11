@@ -3,10 +3,25 @@ pipeline {
     parameters {
         choice(name: 'Environment', choices: ['Development', 'Production'], description: 'Choose an environment where deploy the Database')
     }
+    environment {
+        DEPLOY_TO = "${params.Environment}"
+    }
     stages {
-        stage ('Test') {
+        stage ('Deploy to Development') {
+            when {
+
+            }
             steps {
-                echo "Environment: ${params.Environment}"
+                echo "Environment: ${DEPLOY_TO}"
+            }
+        }
+
+        stage ('Deploy to Production') {
+            when {
+
+            }
+            steps {
+                echo "Environment: ${DEPLOY_TO}"
             }
         }
     }
