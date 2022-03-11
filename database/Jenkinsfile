@@ -17,9 +17,9 @@ pipeline {
             steps {
                 echo "Environment: ${DEPLOY_TO}"
                 sshagent(['az-ubuntu-dev-vm']) {
-                    sh "ssh -o 'StrictHostKeyChecking no' 20.228.132.238 mkdir -p /home/calebespinoza/$FOLDER_NAME"
-                    sh "scp database/docker-compose.yml 20.228.132.238:~/$FOLDER_NAME"
-                    sh "ssh -o 'StrictHostKeyChecking no' 20.228.132.238 ls -a /home/calebespinoza/$FOLDER_NAME"
+                    sh "ssh -o 'StrictHostKeyChecking no' calebespinoza@20.228.132.238 mkdir -p /home/calebespinoza/$FOLDER_NAME"
+                    sh "scp database/docker-compose.yml calebespinoza@20.228.132.238:~/$FOLDER_NAME"
+                    sh "ssh -o 'StrictHostKeyChecking no' calebespinoza@20.228.132.238 ls -a /home/calebespinoza/$FOLDER_NAME"
                 }
             }
         }
