@@ -9,7 +9,7 @@ pipeline {
     stages {
         stage ('Deploy to Development') {
             when {
-
+                environment name: 'DEPLOY_TO', value: 'Development'
             }
             steps {
                 echo "Environment: ${DEPLOY_TO}"
@@ -18,7 +18,7 @@ pipeline {
 
         stage ('Deploy to Production') {
             when {
-
+                environment name: 'DEPLOY_TO', value: 'Production'
             }
             steps {
                 echo "Environment: ${DEPLOY_TO}"
