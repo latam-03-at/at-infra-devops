@@ -14,7 +14,7 @@ pipeline {
         stage ('Download Image') {
             steps {
                 sshagent(['az-ubuntu-dev-vm']) {
-                    sh "ssh -o 'StrictHostKeyChecking no' $SERVER_DEV docker pull converter-service:${params.BuildNumber}"
+                    sh "ssh -o 'StrictHostKeyChecking no' $SERVER_DEV docker pull dilanof/converter-service:${params.BuildNumber}"
                 }
             }
         }
