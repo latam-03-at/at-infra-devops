@@ -1,0 +1,11 @@
+pipeline {
+    agent { label 'automation' }
+    choice(name: 'Environment', choices: ['Development', 'Production'], description: 'Choose an environment where deploy the Database')
+    stages {
+        stage ('Test') {
+            steps {
+                echo "Environment: ${params.Environment}"
+            }
+        }
+    }
+}
